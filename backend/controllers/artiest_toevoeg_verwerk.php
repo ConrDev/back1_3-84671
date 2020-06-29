@@ -54,6 +54,6 @@ if (isset($_POST['submit'])){
         } else {
             $errors['tevoegen-gefaald'] = "Gevens zijn verkeerd!";
         }
-    }    
+    }     
 } 
 ?>

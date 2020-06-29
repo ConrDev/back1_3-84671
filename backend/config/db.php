@@ -4,10 +4,10 @@
 define('SERVER', '127.0.0.1');
 define('USERNAME', 'root');
 define('PASSWORD', '');
-define('NAME', 'rensmlj378_back');
+define('NAME', 'back');
 
 $link = mysqli_connect(SERVER, USERNAME, PASSWORD, NAME);
 
 if ($link === false) die('ERROR: Could not connect. ' . mysqli_connect_error());
 
-?>
+?> 
