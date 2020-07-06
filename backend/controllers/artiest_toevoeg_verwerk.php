@@ -6,6 +6,8 @@ session_start();
 $artiestnaam = "";
 $instrument = "";
 $gd = "";
+$format = "Y-m-d";
+$datum = date($format, strtotime($gd));
 $geslacht = "";
 $band = "";
 $info = "";
@@ -22,7 +24,9 @@ if (isset($_POST['submit'])){
         $errors['instrument'] = 'Vul een instrument in';
     }
 
-    if (empty($_POST['gd'])) {
+    if ($gd == $datum) {
+        $errors['gd'] = 'Vul een geldige datum in';
+    } else if (empty($_POST['gd'])) {
         $errors['gd'] = 'Vul een geboortedatum in';
     }
 
@@ -54,6 +58,6 @@ if (isset($_POST['submit'])){
         } else {
             $errors['tevoegen-gefaald'] = "Gevens zijn verkeerd!";
         }
-    }     
+    }    
 } 
 ?>
