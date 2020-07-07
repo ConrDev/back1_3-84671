@@ -1,7 +1,13 @@
 <?php 
-    include "backend/controllers/band_toevoeg_verwerk.php"; 
+    include "backend/controllers/album_toevoeg_verwerk.php"; 
+    // require 'backend/config/db.php';
+    // session_start();
 
+    $query = "SELECT * FROM bands";
+
+    $resultaat = mysqli_query($link, $query);
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -17,12 +23,67 @@
   </head>
   <body style="background-color: lightgray;">
       <div class="modal-content col-5 mx-auto p-5">
-            <form class="form" method="POST" action="band_toevoeg.php">
-                <h1 for="" class="text-center">Welkom <?=$_SESSION['user']; ?>!</h1><br>
-                <p for="" class="text-center">Voeg een Band toe!</p><br>
+            <form class="form" method="POST" action="album_toevoegen.php" enctype="multipart/form-data">
+                <h1 for="" class="text-center">Voeg een Album toe!</h1><br>
                 <div class="form-group">
-                    <label for="">Bandnaam</label>
-                    <input type="text" class="form-control" name="band" id="band" placeholder="">
+                    <label for="">Cover</label>
+                    <input type="file" class="form-control" name="cover" id="cover" placeholder="" accept="image/png, image/jpeg, image/gif">
+                    <small name="coverError" id="coverError" class="form-text text-muted">
+                        <?php if (!empty($errors['cover'])) : ?>
+                            <div class="alert alert-danger">
+                                <li>
+                                <?php echo $errors['cover']; ?>
+                                </li>
+                            </div>
+                        <?php endif; ?>
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="">Titel</label>
+                    <input type="text" class="form-control" name="titel" id="titel" placeholder="">
+                    <small name="titelError" id="titelError" class="form-text text-muted">
+                        <?php if (!empty($errors['titel'])) : ?>
+                            <div class="alert alert-danger">
+                                <li>
+                                <?php echo $errors['titel']; ?>
+                                </li>
+                            </div>
+                        <?php endif; ?>
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="">jaar</label>
+                    <input type="number" class="form-control" name="jaar" id="jaar" placeholder="">
+                    <small name="jaarError" id="jaarError" class="form-text text-muted">
+                        <?php if (!empty($errors['jaar'])) : ?>
+                            <div class="alert alert-danger">
+                                <li>
+                                <?php echo $errors['jaar']; ?>
+                                </li>
+                            </div>
+                        <?php endif; ?>
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="">Band</label>
+                    <!-- <input type="text" class="form-control" name="muzieksoort" id="muzieksoort" placeholder=""> -->
+                    <?php
+                        if (isset($_GET['band'])) {
+                    ?>
+                            <input type="text" class="form-control" name="bandVeld" id="band" value="<?=$_GET['id']; ?>" placeholder="<?=$_GET['band']; ?>" disabled> 
+                    <?php
+                        } else {
+                    ?>
+                            <select class="form-control" name="bandVeld" id="band">
+                                <?php
+                                    while ($rij = mysqli_fetch_array($resultaat)) {
+                                        echo "<option value=" .$rij['id']. ">" .$rij['naam']. "</option>";
+                                    }
+                                ?>
+                            </select>
+                    <?php
+                        }
+                    ?>
                     <small name="bandError" id="bandError" class="form-text text-muted">
                         <?php if (!empty($errors['band'])) : ?>
                             <div class="alert alert-danger">
@@ -34,56 +95,8 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label for="">Land van herkomst</label>
-                    <input type="text" class="form-control" name="land" id="land" placeholder="">
-                    <small name="landError" id="landError" class="form-text text-muted">
-                        <?php if (!empty($errors['land'])) : ?>
-                            <div class="alert alert-danger">
-                                <li>
-                                <?php echo $errors['land']; ?>
-                                </li>
-                            </div>
-                        <?php endif; ?>
-                    </small>
-                </div>
-                <div class="form-group">
-                    <label for="">Aantal leden</label>
-                    <input type="number" class="form-control" name="leden" id="leden" placeholder="">
-                    <small name="ledenError" id="ledenError" class="form-text text-muted">
-                        <?php if (!empty($errors['leden'])) : ?>
-                            <div class="alert alert-danger">
-                                <li>
-                                <?php echo $errors['leden']; ?>
-                                </li>
-                            </div>
-                        <?php endif; ?>
-                    </small>
-                </div>
-                <div class="form-group">
-                    <label for="">Soort muziek</label>
-                    <input type="text" class="form-control" name="muzieksoort" id="muzieksoort" placeholder="">
-                    <small name="muzieksoortError" id="muzieksoortError" class="form-text text-muted">
-                        <?php if (!empty($errors['muzieksoort'])) : ?>
-                            <div class="alert alert-danger">
-                                <li>
-                                <?php echo $errors['muzieksoort']; ?>
-                                </li>
-                            </div>
-                        <?php endif; ?>
-                    </small>
-                </div>
-                <div class="form-group">
                     <label for="">Algemene info</label>
                     <textarea class="form-control" name="info" id="info" rows="3"></textarea>
-                    <small name="infoError" id="infoError" class="form-text text-muted">
-                        <?php if (!empty($errors['info'])) : ?>
-                            <div class="alert alert-danger">
-                                <li>
-                                <?php echo $errors['info']; ?>
-                                </li>
-                            </div>
-                        <?php endif; ?>
-                    </small>
                 </div>
                 <button name="submit" type="submit" class="btn btn-primary">Voeg toe</button>
                     <small name="succes" id="succes" class="form-text text-muted">
@@ -95,7 +108,7 @@
                             </div>
                         <?php endif; ?>
                     </small>
-                    <a href="band_uitlees.php" name="bands" class="float-left btn btn-secondary">Alle Bands</a>
+                <a href="band_uitlees.php" name="bands" class="float-left btn btn-secondary">Alle Bands</a>
             </form>
     </div>
 

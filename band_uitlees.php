@@ -75,6 +75,7 @@
         </table>
         <a href="band_toevoegen.php" name="bands" class="float-left btn btn-primary">Band Toevoegen</a>
         <a href="artiest_uitlees.php" name="artiesten" class="float-left btn btn-primary">Artiesten Weergeven</a>
+        <a href="Albums_uitlees.php" name="albums" class="float-left btn btn-primary">Albums Weergeven</a>
         <a href="loguit.php" name="bands" class="float-left btn btn-secondary">loguit</a>
       </div>
   </body>

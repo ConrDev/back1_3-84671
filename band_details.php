@@ -6,9 +6,11 @@ $bandid = $_GET['id'];
 
 $query = "SELECT * FROM bands WHERE id='$bandid'";
 $queryArtiest = "SELECT * FROM artiesten WHERE band='$bandid'";
+$queryAlbums = "SELECT * FROM albums WHERE id_Band='$bandid'";
 
 $resultaat = mysqli_query($link, $query);
 $resultaatArtiest = mysqli_query($link, $queryArtiest);
+$resultaatAlbums = mysqli_query($link, $queryAlbums);
 
 $band = "";
 ?>
@@ -29,11 +31,12 @@ $band = "";
   <body style="background-color: lightgray;">
       <div class="modal-content col-10 mx-auto p-5">
         <h1 for="" class="text-center">Info</h1><br>
+        <!-- BAND INFO -->
         <table class="table table-striped table-hover">
         <?php
             if (mysqli_num_rows($resultaat) == 0) {
         ?>
-                <p class="p-3 mb-2 text-white text-center bg-danger">Sorry! geen bands gevonden in de database</p>
+                <p class="p-3 mb-2 text-white text-center bg-danger">Sorry! geen bands gevonden in het database</p>
         <?php
             } else {
         ?>
@@ -66,12 +69,12 @@ $band = "";
             }
         ?>
         </table>
-
+        <!-- ARTIESTEN -->
         <table class="table table-striped table-hover">
         <?php
             if (mysqli_num_rows($resultaatArtiest) == 0) {
         ?>
-                <p class="p-3 mb-2 text-white text-center bg-danger">Sorry! geen leden gevonden in de database</p>
+                <p class="p-3 mb-2 text-white text-center bg-danger">Sorry! geen leden gevonden in het database</p>
         <?php
             } else {
         ?>
@@ -115,7 +118,57 @@ $band = "";
             }
         ?>
         </table>
+        <!-- ALBUMS -->
+        <table class="table table-striped table-hover">
+        <?php
+            if (mysqli_num_rows($resultaatAlbums) == 0) {
+        ?>
+                <p class="p-3 mb-2 text-white text-center bg-danger">Sorry! geen albums gevonden in het database</p>
+        <?php
+            } else {
+        ?>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Cover</th>
+                    <th scope="col">Titel</th>
+                    <th scope="col">Jaar</th>
+                    <th scope="col">Info</th>
+                    <th scope="col"> </th>
+                    <th scope="col"> </th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+        <?php
+                while ($rij = mysqli_fetch_array($resultaatAlbums)) {
+        ?> 
+                <tr>
+                    <th><img src="<?=$rij['afbeelding']; ?>" width="200" height="200"></td>
+                    <td><?=$rij['titel']; ?></td>
+                    <td><?=$rij['jaar']; ?></td>
+                    <td><?=$rij['info']; ?></td>
+                    <td> </td>
+
+                    <?php
+                        if ($_SESSION['level'] > 0) {
+                    ?>
+                        <td><a href='album_wijzig_verwerk.php?id=<?=$rij['id'];?>'>Pas aan</a></td>
+                        <td><a href='album_verwijder.php?id=<?=$rij['id'];?>'>Verwijder</a></td>
+                    <?php
+                        }
+                    ?>
+                </tr>
+                
+        <?php
+                } 
+        ?>
+            </tbody>
+        <?php
+            }
+        ?>
+        </table>
         <a href="artiest_toevoegen.php?band=<?=$band; ?>" name="artiest" class="float-right btn btn-primary">Artiest Toevoegen</a>
+        <a href="album_toevoegen.php" name="album" class="float-right btn btn-primary">Album Toevoegen</a>
         <a href="band_uitlees.php" name="bands" class="float-right btn btn-secondary">Terug</a>
       </div>
   </body>
