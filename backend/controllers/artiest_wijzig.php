@@ -43,7 +43,7 @@ if (isset($_POST['submit'])){
     $info = htmlentities($_POST ['info'], ENT_QUOTES);
 
     if (count($errors) === 0) {
-        $query = "UPDATE artiesten SET naam='$artiestnaam', instrument='$instrument', geboortedatum='$gd', geslacht='$geslacht', info='$info', band='$band'";
+        $query = "UPDATE artiesten SET naam='$artiestnaam', instrument='$instrument', geboortedatum='$gd', geslacht='$geslacht', info='$info', band='$band' WHERE ID_Artiest='$artiestid'";
         $bandsql = mysqli_query($link, $query);
 
         if($bandsql) {
